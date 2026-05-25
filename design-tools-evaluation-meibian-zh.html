@@ -281,7 +281,7 @@
 <nav>
   <div class="logo">AI 設計工具 2026 · 給美編</div>
   <div class="dots" id="navDots"></div>
-  <div class="slide-count" id="slideCount">01 / 18</div>
+  <div class="slide-count" id="slideCount">01 / 19</div>
 </nav>
 
 <!-- 1: 封面 -->
@@ -298,7 +298,7 @@
     </div>
     <div style="margin-top: 48px; display: flex; gap: 28px; color: var(--text-dim); font-size: 15px;">
       <span>2026-05-05</span>
-      <span>共 18 頁</span>
+      <span>共 19 頁</span>
       <span>請按方向鍵或滾動</span>
     </div>
   </div>
@@ -401,7 +401,7 @@
       <div class="pc-card bad">
         <div class="head">− 限制（AI 工具想補的）</div>
         <ul>
-          <li>🤖 <strong>本身沒有 AI 幫你設計</strong> — AI 功能在 Figma Make 才有，Figma Design 還是純手動</li>
+          <li>🤖 <strong>沒有「內建」AI</strong> — Figma Design 本身不會自己生成設計，要用 AI 得外接工具（詳見最後附錄）</li>
           <li>🖼️ <strong>出的是「圖」不是 code</strong> — 還要工程師照著重刻成網站</li>
           <li>🎬 <strong>互動要一個個手動設定</strong> — 原型做得出來，但每個點擊、跳轉都要自己慢慢接，很花時間</li>
           <li>🚀 <strong>不能直接變網站</strong> — 要另外用 Figma Make，或交給工程師</li>
@@ -752,7 +752,7 @@
       </thead>
       <tbody>
         <tr style="background: rgba(124,58,237,0.04);">
-          <td class="highlight-figma">Figma Design<br><span style="font-size: 11px; color: var(--text-dim); font-weight: 400;">美編現在用的</span></td>
+          <td class="highlight-figma">Figma Design<br><span style="font-size: 11px; color: var(--text-dim); font-weight: 400;">美編現在用的 · 可外接 AI（beta）</span></td>
           <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">多畫板並排</span></td>
           <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓ 有 GUI</span><br><span style="font-size: 12px; color: var(--text-dim);">最熟悉</span></td>
           <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">模擬</span><br><span style="font-size: 12px; color: var(--text-dim);">原型可點</span></td>
@@ -803,7 +803,8 @@
     </table>
     <p style="font-size: 14px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">
       💡 <strong>「能用滑鼠改 (GUI editor)」</strong>= 能像 Figma 一樣用滑鼠調整；標 <strong style="color: var(--danger);">✗</strong> 的只能打 prompt 改。<br>
-      想把成果<strong>帶回 Figma 繼續修</strong>的話，目前只有 <strong class="highlight-figma">Figma Make</strong>（單向）和 <strong class="highlight-stitch">Stitch</strong> 能匯出到 Figma。
+      想把成果<strong>帶回 Figma 繼續修</strong>的話，目前只有 <strong class="highlight-figma">Figma Make</strong>（單向）和 <strong class="highlight-stitch">Stitch</strong> 能匯出到 Figma。<br>
+      🔬 Figma Design 也能<strong>外接 AI（Claude Code）</strong>自動生成設計 —— 還在 <strong>beta</strong>，詳見最後附錄。
     </p>
   </div>
 </section>
@@ -951,6 +952,9 @@
     <div style="text-align: center; font-size: 14px; color: var(--text); background: var(--surface); border-radius: 10px; padding: 12px 18px;">
       <strong style="color: var(--claude);">📌 建議做法：</strong>下一個小專案先用 Claude Design 做做看，習慣之後再慢慢用在更多工作上。
     </div>
+    <div style="text-align: center; font-size: 13px; color: var(--text-dim); margin-top: 12px;">
+      🔬 <strong class="highlight-figma">Figma Design ＋ Claude Code</strong> 很有潛力，但<strong>還在 beta</strong> — 建議先小範圍嘗試、保持觀望，<strong>現階段主力仍是 <span class="highlight-claude">Claude Design</span></strong>。
+    </div>
   </div>
 </section>
 
@@ -984,6 +988,44 @@
     </div>
     <div class="plain-note" style="margin-top: 22px; border-color: var(--success);">
       <strong style="color: var(--success);">所以——</strong>你不用丟掉熟悉的 Figma。把 AI 當成多了一個幫手，需要的時候才用。
+    </div>
+  </div>
+</section>
+
+<!-- 19: 附錄 · 如何外接 Claude Code 生成到 Figma -->
+<section class="slide" data-slide="19">
+  <div class="slide-inner fade-in" style="max-width: 1200px;">
+    <div class="label" style="color: var(--figma);">附錄 · 進階（beta）&nbsp;&nbsp;<span style="display:inline-block; background: var(--figma); color:#fff; padding:2px 10px; border-radius:9999px; font-size:11px; font-weight:800; letter-spacing:1px;">🆕 2026 最新推出</span></div>
+    <h2>用 <span class="highlight-claude">Claude Code</span> 把設計生成到 <span class="highlight-figma">Figma</span> <span style="display:inline-block; vertical-align:middle; background:#fef2f2; color:var(--paper); border:1px solid #ffc9c9; padding:3px 12px; border-radius:9999px; font-size:14px; font-weight:800; letter-spacing:1px;">NEW</span></h2>
+    <p class="subtitle" style="margin-bottom: 24px;">在你熟悉的 Figma 裡，用「打字描述」讓 AI 幫你生出設計。第一次設定請工程師協助一次即可。</p>
+
+    <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 10px;">① 需要準備</div>
+    <div class="cap-grid" style="margin-bottom: 20px;">
+      <div class="cap-card"><div class="icon">🤖</div><div class="name" style="font-size: 16px;">Claude Code</div><div class="desc">負責生成的 AI 工具（需要 Claude 帳號）</div></div>
+      <div class="cap-card"><div class="icon">🎨</div><div class="name" style="font-size: 16px;">Figma 付費帳號</div><div class="desc">需要 Full seat，AI 才能寫進你的 Figma</div></div>
+      <div class="cap-card"><div class="icon">🔌</div><div class="name" style="font-size: 16px;">設定 Figma MCP</div><div class="desc">一次性連接 — 請工程師幫忙設定一次</div></div>
+    </div>
+
+    <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 10px;">② 怎麼用（3 步）</div>
+    <div style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 12px; align-items: stretch; margin-bottom: 20px;">
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--figma); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 1</div><div style="font-size: 14px; line-height: 1.6;">把 <strong>Figma 檔案連結</strong>貼給 Claude Code</div></div>
+      <div style="display: flex; align-items: center; color: var(--text-dim); font-size: 24px;">→</div>
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--figma); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 2</div><div style="font-size: 14px; line-height: 1.6;">用白話<strong>描述你要的設計</strong>（像跟人說需求一樣）</div></div>
+      <div style="display: flex; align-items: center; color: var(--text-dim); font-size: 24px;">→</div>
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--success); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 3</div><div style="font-size: 14px; line-height: 1.6;">AI <strong>直接生成在 Figma Design</strong> 裡 → 你再用滑鼠細修</div></div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--figma); border-radius: 12px; padding: 16px 22px;">
+      <div style="font-size: 15px; line-height: 1.7;">
+        🎯 <strong>實際範例：</strong>本報告的<strong>災害需求管理儀表板</strong>就是這樣生成的 —
+        <a href="https://www.figma.com/design/w7cvdf9QqpMgI1jz2KswAZ/Untitled?node-id=2-2" target="_blank" style="color: var(--accent); font-weight: 600;">看 Figma 檔 →</a>
+      </div>
+      <div style="font-size: 13px; color: var(--text-dim); margin-top: 8px;">
+        🔗 參考：
+        <a href="https://claude.com/claude-code" target="_blank" style="color: var(--accent);">Claude Code</a> ·
+        <a href="https://www.figma.com/blog/the-figma-canvas-is-now-open-to-agents/" target="_blank" style="color: var(--accent);">Figma 官方說明（canvas open to agents）</a>
+        <br>詳細 MCP 設定步驟見「工程師版」簡報。
+      </div>
     </div>
   </div>
 </section>

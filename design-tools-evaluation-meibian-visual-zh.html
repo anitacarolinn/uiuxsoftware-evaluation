@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 設計工具 2026 — 美編視覺版（看圖就懂）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --figma: #7c3aed; --paper: #dc2626; --stitch: #15803d; --aistudio: #1d4ed8; --claude: #b45309;
+    --bg: #f7f1e3; --surface: #fdfaf2; --surface2: #f0e8d3; --text: #2a2520; --text-dim: #6b6358;
+    --border: #d9cfb8; --accent: #4f46e5; --success: #16a34a; --danger: #dc2626; --warning: #ca8a04;
+  }
+  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+  body { font-family: 'Noto Sans TC', 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(247,241,227,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  nav .logo { font-weight: 800; font-size: 14px; letter-spacing: 2px; color: var(--text-dim); }
+  nav .dots { display: flex; gap: 8px; }
+  nav .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); cursor: pointer; transition: all 0.3s; }
+  nav .dot.active { background: var(--accent); transform: scale(1.3); }
+  nav .dot:hover { background: var(--text-dim); }
+  nav .slide-count { font-size: 13px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+  .slide { min-height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 90px 50px 50px; position: relative; }
+  .slide-inner { max-width: 1300px; width: 100%; }
+
+  h1 { font-size: clamp(44px, 7vw, 84px); font-weight: 900; line-height: 1.1; letter-spacing: -1px; }
+  h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 800; line-height: 1.18; letter-spacing: -0.5px; }
+  .subtitle { font-size: clamp(17px, 1.8vw, 23px); color: var(--text-dim); margin-top: 22px; line-height: 1.5; font-weight: 300; }
+  .label { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--accent); margin-bottom: 16px; }
+
+  .gradient-text { background: linear-gradient(135deg, var(--figma), var(--stitch), var(--aistudio), var(--claude), var(--paper)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .audience-tag { display: inline-block; padding: 8px 20px; border-radius: 24px; font-size: 16px; font-weight: 600; border: 1px solid var(--border); background: var(--surface); margin-right: 8px; }
+  .tool-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 14px; color: #fff; }
+  .highlight-figma { color: var(--figma); } .highlight-paper { color: var(--paper); } .highlight-stitch { color: var(--stitch); } .highlight-aistudio { color: var(--aistudio); } .highlight-claude { color: var(--claude); }
+
+  .chip { display: inline-block; padding: 7px 16px; border-radius: 9999px; background: var(--surface2); font-size: 16px; font-weight: 600; margin: 4px 4px 0 0; }
+  .shot { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px; box-shadow: 0 6px 28px rgba(0,0,0,0.10); }
+  .shot img { display: block; width: 100%; max-height: 66vh; object-fit: contain; border-radius: 8px; }
+  .head-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+  .head-row h2 { font-size: clamp(24px, 3.2vw, 38px); margin: 0; }
+  .chips { margin-bottom: 14px; }
+  img.zoomable { cursor: zoom-in; transition: transform 0.2s; }
+  img.zoomable:hover { transform: scale(1.01); }
+
+  .matrix { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+  .matrix th, .matrix td { padding: 14px 16px; text-align: left; }
+  .matrix thead { background: var(--surface2); }
+  .matrix th { font-size: 14px; font-weight: 700; letter-spacing: 0.5px; color: var(--text-dim); }
+  .matrix tbody tr { border-top: 1px solid var(--border); }
+  .matrix td { font-size: 16px; line-height: 1.5; }
+  .matrix td:first-child { font-weight: 700; color: var(--text); }
+  h3 { font-size: 22px; font-weight: 700; margin-bottom: 14px; }
+  .recommend-hero { background: linear-gradient(135deg, rgba(180,83,9,0.10), rgba(180,83,9,0.04)); border: 2px solid var(--claude); border-radius: 18px; padding: 26px 30px; margin-bottom: 18px; text-align: center; }
+  .recommend-hero .lbl { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: var(--claude); margin-bottom: 10px; }
+  .recommend-hero .text { font-size: 26px; font-weight: 900; line-height: 1.4; color: var(--text); }
+  .recommend-hero .text .tool { color: var(--claude); }
+  .reason-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .reason-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .reason-card .num { font-size: 13px; font-weight: 700; color: var(--claude); margin-bottom: 6px; letter-spacing: 1px; }
+  .reason-card .title { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+  .reason-card .body { font-size: 14px; color: var(--text-dim); line-height: 1.55; }
+  .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .cap-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px 18px; }
+  .cap-card .icon { font-size: 32px; margin-bottom: 10px; }
+  .cap-card .name { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
+  .cap-card .desc { font-size: 14px; color: var(--text-dim); line-height: 1.55; }
+
+  .rec-hero { background: linear-gradient(135deg, rgba(180,83,9,0.12), rgba(180,83,9,0.04)); border: 2px solid var(--claude); border-radius: 22px; padding: 44px; text-align: center; }
+  .rec-hero .big { font-size: clamp(30px, 5vw, 54px); font-weight: 900; }
+
+  .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .key-hint { position: fixed; bottom: 24px; right: 40px; z-index: 100; display: flex; gap: 8px; align-items: center; color: var(--text-dim); font-size: 13px; }
+  .key { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 12px; }
+
+  .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 40px; cursor: zoom-out; }
+  .lightbox.show { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 8px 40px rgba(0,0,0,0.6); border-radius: 6px; }
+  .lightbox-close { position: absolute; top: 18px; right: 24px; color: #fff; font-size: 36px; font-weight: 300; background: none; border: none; cursor: pointer; line-height: 1; }
+
+  @media (max-width: 1100px) { .reason-grid, .cap-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) { .slide { padding: 80px 18px 40px; } nav { padding: 12px 18px; } .key-hint { display: none; } .reason-grid, .cap-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">AI 設計工具 2026 · 美編視覺版</div>
+  <div class="dots" id="navDots"></div>
+  <div class="slide-count" id="slideCount">01 / 11</div>
+</nav>
+
+<!-- 1: 封面 -->
+<section class="slide" data-slide="1">
+  <div class="slide-inner fade-in" style="text-align: center;">
+    <div class="label">給美編 · 看圖就懂</div>
+    <h1><span class="gradient-text">AI 幫你<br>更快做設計</span></h1>
+    <p class="subtitle">五個 AI 工具實測 — 直接看它們畫出來的樣子</p>
+    <div style="margin-top: 36px;">
+      <span class="audience-tag">🎨 給美編</span>
+      <span class="audience-tag">少字 · 多圖</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2: 先講重點（合併 why / what / Figma 定位）-->
+<section class="slide" data-slide="2">
+  <div class="slide-inner fade-in">
+    <div class="label" style="text-align: center;">先講重點</div>
+    <h2 style="text-align: center; margin-bottom: 30px;">為什麼美編該認識 AI 工具</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 30px 24px; text-align: center;">
+        <div style="font-size: 46px; margin-bottom: 10px;">🤖</div>
+        <div style="font-size: 21px; font-weight: 800; margin-bottom: 6px;">AI 進步很快</div>
+        <div style="font-size: 16px; color: var(--text-dim);">打字描述，就能生出設計</div>
+      </div>
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 30px 24px; text-align: center;">
+        <div style="font-size: 46px; margin-bottom: 10px;">🖱️</div>
+        <div style="font-size: 21px; font-weight: 800; margin-bottom: 6px;">不用會寫程式</div>
+        <div style="font-size: 16px; color: var(--text-dim);">多數工具能用滑鼠改</div>
+      </div>
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 30px 24px; text-align: center;">
+        <div style="font-size: 46px; margin-bottom: 10px;">⚡</div>
+        <div style="font-size: 21px; font-weight: 800; margin-bottom: 6px;">出來就是成品</div>
+        <div style="font-size: 16px; color: var(--text-dim);">工程師直接接手，不用重畫</div>
+      </div>
+      <div style="background: var(--surface); border: 1px solid var(--claude); border-radius: 16px; padding: 30px 24px; text-align: center;">
+        <div style="font-size: 46px; margin-bottom: 10px;">🤝</div>
+        <div style="font-size: 21px; font-weight: 800; margin-bottom: 6px;">Figma 還是主力</div>
+        <div style="font-size: 16px; color: var(--text-dim);">AI 只是多一個新幫手</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 3: 設定 -->
+<section class="slide" data-slide="3">
+  <div class="slide-inner fade-in" style="text-align: center;">
+    <h2>同一句話 →<br>五個 AI 畫出<span class="highlight-claude">不一樣</span>的設計</h2>
+    <p class="subtitle">題目：一個「災害需求儀表板」</p>
+    <div style="margin-top: 30px; font-size: 18px; color: var(--text-dim);">往下滑，看它們各自的成果 👇</div>
+  </div>
+</section>
+
+<!-- 4: Paper -->
+<section class="slide" data-slide="4">
+  <div class="slide-inner fade-in">
+    <div class="head-row">
+      <span class="tool-badge" style="background: var(--paper); font-size: 16px; padding: 7px 18px;">Paper</span>
+      <h2>畫面最漂亮，能用滑鼠細修</h2>
+    </div>
+    <div class="chips"><span class="chip">🖱️ 滑鼠改</span><span class="chip">✨ 最漂亮</span><span class="chip">🚫 不會動</span><a href="https://app.paper.design/file/01KPMV40MNX7WF0B4VCVYYVR9T/1-0" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--paper); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 live →</a></div>
+    <div class="shot"><img class="zoomable" src="img/paper-1.png" alt="Paper 設計成果"></div>
+  </div>
+</section>
+
+<!-- 5: Stitch -->
+<section class="slide" data-slide="5">
+  <div class="slide-inner fade-in">
+    <div class="head-row">
+      <span class="tool-badge" style="background: var(--stitch); font-size: 16px; padding: 7px 18px;">Stitch</span>
+      <h2>最快、免費，適合做草稿</h2>
+    </div>
+    <div class="chips"><span class="chip">⚡ 最快</span><span class="chip">💸 免費</span><span class="chip">💬 打字改</span><a href="https://stitch.withgoogle.com/projects/10574739860128708197" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--stitch); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 live →</a></div>
+    <div class="shot"><img class="zoomable" src="img/stitch-1.png" alt="Stitch 設計成果"></div>
+  </div>
+</section>
+
+<!-- 6: AI Studio -->
+<section class="slide" data-slide="6">
+  <div class="slide-inner fade-in">
+    <div class="head-row">
+      <span class="tool-badge" style="background: var(--aistudio); font-size: 16px; padding: 7px 18px;">AI Studio</span>
+      <h2>直接做出能用的網站</h2>
+    </div>
+    <div class="chips"><span class="chip">🌐 能上線</span><span class="chip">🎬 會動</span><span class="chip">🖱️ 部分滑鼠改</span><a href="https://ai.studio/apps/57bb988c-4d21-4ddd-ba8a-1be79dffa5a3" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--aistudio); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 live →</a></div>
+    <div class="shot"><img class="zoomable" src="img/googleaistudio-1.png" alt="Google AI Studio 設計成果"></div>
+  </div>
+</section>
+
+<!-- 7: Claude Design -->
+<section class="slide" data-slide="7">
+  <div class="slide-inner fade-in">
+    <div class="head-row">
+      <span class="tool-badge" style="background: var(--claude); font-size: 16px; padding: 7px 18px;">Claude Design</span>
+      <h2>會動 ＋ 改法最多</h2>
+    </div>
+    <div class="chips"><span class="chip">🎬 真的會動</span><span class="chip">🖱️ 改法最多</span><span class="chip">❓ 會先問你</span><a href="https://claude.ai/design/p/decda9f3-7703-4882-a1bb-cf1b4430b3d4?file=dashboard.html&via=share" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--claude); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 live →</a></div>
+    <div class="shot"><img class="zoomable" src="img/claude-1.png" alt="Claude Design 設計成果"></div>
+  </div>
+</section>
+
+<!-- 8: 一眼比較 -->
+<section class="slide" data-slide="8">
+  <div class="slide-inner fade-in">
+    <div class="label">美編最在意的比較</div>
+    <h2 style="margin-bottom: 26px;">對美編來說，重點看這幾項</h2>
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th></th>
+          <th style="text-align: center;">能做多個版本？</th>
+          <th style="text-align: center;">能用滑鼠改？<br><span style="font-weight: 400; font-size: 12px;">(GUI editor)</span></th>
+          <th style="text-align: center;">會動的互動？</th>
+          <th style="text-align: center;">能發佈網站？</th>
+          <th style="text-align: center;">能匯出到 Figma？</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: rgba(124,58,237,0.04);">
+          <td class="highlight-figma">Figma Design<br><span style="font-size: 11px; color: var(--text-dim); font-weight: 400;">美編現在用的</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">多畫板並排</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓ 有 GUI</span><br><span style="font-size: 12px; color: var(--text-dim);">最熟悉</span></td>
+          <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">可，但手動</span><br><span style="font-size: 12px; color: var(--text-dim);">要一個個設定</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span><br><span style="font-size: 12px; color: var(--text-dim);">只能分享設計稿</span></td>
+          <td style="text-align: center;"><span style="color: var(--text-dim); font-weight: 700;">原生</span><br><span style="font-size: 12px; color: var(--text-dim);">本身就是</span></td>
+        </tr>
+        <tr>
+          <td class="highlight-figma">Figma Make</td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span><br><span style="font-size: 12px; color: var(--text-dim);">只能打 prompt</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">一鍵上線</span></td>
+          <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">✓ 單向</span></td>
+        </tr>
+        <tr>
+          <td class="highlight-paper">Paper</td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">用 prompt 生多個</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓ 有 GUI</span><br><span style="font-size: 12px; color: var(--text-dim);">能拖拉</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span><br><span style="font-size: 12px; color: var(--text-dim);">需匯出</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
+        </tr>
+        <tr>
+          <td class="highlight-stitch">Stitch AI</td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">用 prompt 生多個</span></td>
+          <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">部分</span><br><span style="font-size: 12px; color: var(--text-dim);">只能改文字，其餘靠 prompt</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">幾乎沒有</span></td>
+          <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">預覽連結</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span></td>
+        </tr>
+        <tr>
+          <td class="highlight-aistudio">AI Studio</td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span><br><span style="font-size: 12px; color: var(--text-dim);">直接出網站</span></td>
+          <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">部分</span><br><span style="font-size: 12px; color: var(--text-dim);">只能改顏色/字型/大小</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">完整網站</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">能上線</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
+        </tr>
+        <tr>
+          <td class="highlight-claude">Claude Design</td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span><br><span style="font-size: 12px; color: var(--text-dim);">直接出網站</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓ 有 GUI</span><br><span style="font-size: 12px; color: var(--text-dim);">滑鼠+畫圖+滑桿</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓ 真的會動</span></td>
+          <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">需工程師</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size: 14px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">
+      💡 <strong>「能用滑鼠改 (GUI editor)」</strong>= 能像 Figma 一樣用滑鼠調整；標 <strong style="color: var(--danger);">✗</strong> 的只能打 prompt 改。<br>
+      想把成果<strong>帶回 Figma 繼續修</strong>的話，目前只有 <strong class="highlight-figma">Figma Make</strong>（單向）和 <strong class="highlight-stitch">Stitch</strong> 能匯出到 Figma。
+    </p>
+  </div>
+</section>
+
+<!-- 9: 推薦 -->
+<section class="slide" data-slide="9">
+  <div class="slide-inner fade-in">
+    <div class="label" style="color: var(--claude);">最終推薦</div>
+    <h2 style="margin-bottom: 18px;">主要推薦 <span class="highlight-claude">Claude Design</span></h2>
+    <div class="recommend-hero">
+      <div class="lbl">★ 主要工具</div>
+      <div class="text">日常設計就用 <span class="tool">Claude Design</span><br>需要最漂亮的畫面時再搭 <span style="color: var(--paper);">Paper</span></div>
+    </div>
+    <div style="font-size: 12px; font-weight: 800; color: var(--success); letter-spacing: 2px; margin-bottom: 10px;">✓ 為什麼推薦給美編</div>
+    <div class="reason-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 18px;">
+      <div class="reason-card" style="border-top: 4px solid var(--success);">
+        <div class="title">💰 免費</div>
+        <div class="body">已含在 Claude</div>
+      </div>
+      <div class="reason-card" style="border-top: 4px solid var(--success);">
+        <div class="title">🖱️ 改法最多</div>
+        <div class="body">滑鼠也能改</div>
+      </div>
+      <div class="reason-card" style="border-top: 4px solid var(--success);">
+        <div class="title">🎬 真的會動</div>
+        <div class="body">能互動測試</div>
+      </div>
+      <div class="reason-card" style="border-top: 4px solid var(--success);">
+        <div class="title">❓ 會先問你</div>
+        <div class="body">成品更貼近需求</div>
+      </div>
+    </div>
+    <div style="background: var(--surface); border: 1px solid var(--warning); border-radius: 12px; padding: 16px 22px; margin-bottom: 18px;">
+      <div style="font-size: 12px; font-weight: 800; color: var(--warning); letter-spacing: 2px; margin-bottom: 12px;">⚠ 要注意的地方（但都還好）</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 28px; font-size: 14px; line-height: 1.6; color: var(--text);">
+        <div>① 每週有額度 <span style="color: var(--text-dim);">→ 分批做</span></div>
+        <div>② 只能用瀏覽器 <span style="color: var(--text-dim);">→ 要有網路</span></div>
+        <div>③ 操作跟 Figma 不同 <span style="color: var(--text-dim);">→ 1–2 週上手</span></div>
+        <div>④ 不能同時比多版本 <span style="color: var(--text-dim);">→ 自己截圖比</span></div>
+      </div>
+    </div>
+    <div style="text-align: center; font-size: 14px; color: var(--text); background: var(--surface); border-radius: 10px; padding: 12px 18px;">
+      <strong style="color: var(--claude);">📌 建議：</strong>下一個小專案，先用 Claude Design 試試看。
+    </div>
+  </div>
+</section>
+
+<!-- 10: Showcase — AI 直接畫進 Figma -->
+<section class="slide" data-slide="10">
+  <div class="slide-inner fade-in">
+    <div class="head-row">
+      <span class="tool-badge" style="background: var(--figma); font-size: 15px; padding: 6px 16px;">最新</span>
+      <h2>這張，是 AI 直接畫進 <span class="highlight-figma">Figma</span> 的</h2>
+    </div>
+    <p style="font-size: 16px; color: var(--text-dim); margin: -2px 0 12px;">AI 讀完需求後，<strong>自動畫進 Figma</strong> — 不是手畫的。想知道怎麼做？看下一頁 👉</p>
+    <div class="chips"><span class="chip">🤖 AI 生成</span><span class="chip">🎨 在你熟悉的 Figma</span><span class="chip">🆕 2026 beta</span><a href="https://www.figma.com/design/w7cvdf9QqpMgI1jz2KswAZ/Untitled?node-id=2-2" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--figma); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 Figma 檔 →</a></div>
+    <div class="shot"><img class="zoomable" src="img/figma-ai-dashboard.png" alt="AI 在 Figma 生成的儀表板設計"></div>
+  </div>
+</section>
+
+<!-- 11: 附錄 · 怎麼做到的（page 19 detail）-->
+<section class="slide" data-slide="11">
+  <div class="slide-inner fade-in" style="max-width: 1200px;">
+    <div class="label" style="color: var(--figma);">附錄 · 怎麼做到的（beta）&nbsp;&nbsp;<span style="display:inline-block; background: var(--figma); color:#fff; padding:2px 10px; border-radius:9999px; font-size:11px; font-weight:800; letter-spacing:1px;">🆕 2026 最新</span></div>
+    <h2 style="font-size: clamp(26px, 3.4vw, 40px); margin-bottom: 8px;">用 <span class="highlight-claude">Claude Code</span> 把設計生成到 <span class="highlight-figma">Figma</span></h2>
+    <p class="subtitle" style="margin-bottom: 22px;">在 Figma 裡，用打字描述讓 AI 生成設計。設定請工程師幫一次。</p>
+
+    <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 10px;">① 需要準備</div>
+    <div class="cap-grid" style="margin-bottom: 20px;">
+      <div class="cap-card"><div class="icon">🤖</div><div class="name" style="font-size: 16px;">Claude Code</div><div class="desc">AI 工具（要 Claude 帳號）</div></div>
+      <div class="cap-card"><div class="icon">🎨</div><div class="name" style="font-size: 16px;">Figma 付費帳號</div><div class="desc">Full seat 才能寫進 Figma</div></div>
+      <div class="cap-card"><div class="icon">🔌</div><div class="name" style="font-size: 16px;">設定 Figma MCP</div><div class="desc">請工程師設定一次</div></div>
+    </div>
+
+    <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 10px;">② 怎麼用（3 步）</div>
+    <div style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 12px; align-items: stretch; margin-bottom: 18px;">
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--figma); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 1</div><div style="font-size: 14px; line-height: 1.6;">貼上 <strong>Figma 連結</strong></div></div>
+      <div style="display: flex; align-items: center; color: var(--text-dim); font-size: 24px;">→</div>
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--figma); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 2</div><div style="font-size: 14px; line-height: 1.6;">白話<strong>描述你要的設計</strong></div></div>
+      <div style="display: flex; align-items: center; color: var(--text-dim); font-size: 24px;">→</div>
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--success); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 3</div><div style="font-size: 14px; line-height: 1.6;">AI <strong>生成到 Figma</strong>，再滑鼠細修</div></div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--figma); border-radius: 12px; padding: 16px 22px;">
+      <div style="font-size: 14px; color: var(--text-dim);">
+        🔗 參考：
+        <a href="https://claude.com/claude-code" target="_blank" style="color: var(--accent);">Claude Code</a> ·
+        <a href="https://www.figma.com/blog/the-figma-canvas-is-now-open-to-agents/" target="_blank" style="color: var(--accent);">Figma 官方說明（canvas open to agents）</a>
+      </div>
+      <div style="font-size: 13px; color: var(--text-dim); margin-top: 8px;">
+        🔬 <strong>還在 beta</strong>：寫進 Figma 目前免費，等正式推出後由 Figma 收費 — 現階段主力仍是 <strong class="highlight-claude">Claude Design</strong>。
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="key-hint"><span class="key">↑</span><span class="key">↓</span> 或滾動</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img src="" alt="" id="lightbox-img">
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const navDots = document.getElementById('navDots');
+  const slideCount = document.getElementById('slideCount');
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => slides[i].scrollIntoView({ behavior: 'smooth' });
+    navDots.appendChild(dot);
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+        slideCount.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+        entry.target.querySelector('.fade-in')?.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.5 });
+  slides.forEach(s => observer.observe(s));
+  document.addEventListener('keydown', (e) => {
+    const dots = document.querySelectorAll('.dot');
+    const current = Array.from(dots).findIndex(d => d.classList.contains('active'));
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); if (current < totalSlides - 1) slides[current + 1].scrollIntoView({ behavior: 'smooth' }); }
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); if (current > 0) slides[current - 1].scrollIntoView({ behavior: 'smooth' }); }
+  });
+  (function() {
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('img.zoomable').forEach(img => {
+      img.addEventListener('click', () => { lbImg.src = img.src; lbImg.alt = img.alt || ''; lb.classList.add('show'); });
+    });
+    lb.addEventListener('click', () => lb.classList.remove('show'));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('show')) { lb.classList.remove('show'); e.stopPropagation(); } });
+  })();
+</script>
+</body>
+</html>

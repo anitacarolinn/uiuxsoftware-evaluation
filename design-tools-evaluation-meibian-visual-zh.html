@@ -194,7 +194,7 @@
 
 <!-- 8: 一眼比較 -->
 <section class="slide" data-slide="8">
-  <div class="slide-inner fade-in">
+  <div class="slide-inner fade-in" style="max-width: 1400px;">
     <div class="label">美編最在意的比較</div>
     <h2 style="margin-bottom: 26px;">對美編來說，重點看這幾項</h2>
     <table class="matrix">
@@ -206,6 +206,7 @@
           <th style="text-align: center;">會動的互動？</th>
           <th style="text-align: center;">能發佈網站？</th>
           <th style="text-align: center;">能匯出到 Figma？</th>
+          <th style="text-align: center;">能匯入 Figma 設計？</th>
         </tr>
       </thead>
       <tbody>
@@ -216,6 +217,7 @@
           <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">可，但手動</span><br><span style="font-size: 12px; color: var(--text-dim);">要一個個設定</span></td>
           <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span><br><span style="font-size: 12px; color: var(--text-dim);">只能分享設計稿</span></td>
           <td style="text-align: center;"><span style="color: var(--text-dim); font-weight: 700;">原生</span><br><span style="font-size: 12px; color: var(--text-dim);">本身就是</span></td>
+          <td style="text-align: center;"><span style="color: var(--text-dim); font-weight: 700;">原生</span></td>
         </tr>
         <tr>
           <td class="highlight-figma">Figma Make</td>
@@ -224,6 +226,7 @@
           <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span></td>
           <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">一鍵上線</span></td>
           <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">✓ 單向</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">從 Figma Design</span></td>
         </tr>
         <tr>
           <td class="highlight-paper">Paper</td>
@@ -232,6 +235,7 @@
           <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
           <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span><br><span style="font-size: 12px; color: var(--text-dim);">需匯出</span></td>
           <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">Figma 插件</span></td>
         </tr>
         <tr>
           <td class="highlight-stitch">Stitch AI</td>
@@ -240,6 +244,7 @@
           <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">幾乎沒有</span></td>
           <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">預覽連結</span></td>
           <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
         </tr>
         <tr>
           <td class="highlight-aistudio">AI Studio</td>
@@ -247,6 +252,7 @@
           <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">部分</span><br><span style="font-size: 12px; color: var(--text-dim);">只能改顏色/字型/大小</span></td>
           <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">完整網站</span></td>
           <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">能上線</span></td>
+          <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
           <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
         </tr>
         <tr>
@@ -256,12 +262,14 @@
           <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓ 真的會動</span></td>
           <td style="text-align: center;"><span style="color: var(--warning); font-weight: 700;">需工程師</span></td>
           <td style="text-align: center;"><span style="color: var(--danger); font-weight: 900;">✗</span></td>
+          <td style="text-align: center;"><span style="color: var(--success); font-weight: 900;">✓</span><br><span style="font-size: 12px; color: var(--text-dim);">.fig 可上傳</span></td>
         </tr>
       </tbody>
     </table>
     <p style="font-size: 14px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">
       💡 <strong>「能用滑鼠改 (GUI editor)」</strong>= 能像 Figma 一樣用滑鼠調整；標 <strong style="color: var(--danger);">✗</strong> 的只能打 prompt 改。<br>
-      想把成果<strong>帶回 Figma 繼續修</strong>的話，目前只有 <strong class="highlight-figma">Figma Make</strong>（單向）和 <strong class="highlight-stitch">Stitch</strong> 能匯出到 Figma。
+      <strong>匯出到 Figma：</strong>只有 <strong class="highlight-figma">Figma Make</strong>（單向）和 <strong class="highlight-stitch">Stitch</strong>。<br>
+      <strong>匯入 Figma 設計：</strong><strong class="highlight-paper">Paper</strong>（Figma 插件）、<strong class="highlight-figma">Figma Make</strong>（從 Figma Design）、<strong class="highlight-claude">Claude Design</strong>（可上傳 .fig 檔）。
     </p>
   </div>
 </section>
@@ -309,51 +317,75 @@
   </div>
 </section>
 
-<!-- 10: Showcase — AI 直接畫進 Figma -->
+<!-- 10: Figma 新發展 — 也能 Prompt → Code -->
 <section class="slide" data-slide="10">
-  <div class="slide-inner fade-in">
-    <div class="head-row">
-      <span class="tool-badge" style="background: var(--figma); font-size: 15px; padding: 6px 16px;">最新</span>
-      <h2>這張，是 AI 直接畫進 <span class="highlight-figma">Figma</span> 的</h2>
+  <div class="slide-inner fade-in" style="max-width: 1200px;">
+    <div class="label" style="color: var(--figma);">2026 新發展</div>
+    <h2 style="margin-bottom: 14px;"><span class="highlight-figma">Figma</span> 現在也能 <span class="highlight-claude">Prompt → Code</span> 了</h2>
+    <p class="subtitle" style="margin-bottom: 30px;">Figma 開放 MCP 之後，AI 可以直接在 Figma 裡生成設計 ＋ 出 code — 不再只是「畫設計稿」而已。</p>
+
+    <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: stretch;">
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 26px;">
+        <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 12px;">🐢 以前</div>
+        <div style="font-size: 17px; line-height: 1.75;">美編在 Figma 畫<strong>設計稿</strong> → 工程師<strong>手刻 code</strong> → 變成網站</div>
+      </div>
+      <div style="display: flex; align-items: center; color: var(--text-dim); font-size: 32px;">→</div>
+      <div style="background: var(--surface); border: 2px solid var(--figma); border-radius: 14px; padding: 24px 26px;">
+        <div style="font-size: 13px; font-weight: 800; color: var(--figma); letter-spacing: 2px; margin-bottom: 12px;">⚡ 現在（用 MCP）</div>
+        <div style="font-size: 17px; line-height: 1.75;">美編<strong>打字描述</strong> → AI <strong>直接在 Figma 生成設計 ＋ code</strong></div>
+      </div>
     </div>
-    <p style="font-size: 16px; color: var(--text-dim); margin: -2px 0 12px;">AI 讀完需求後，<strong>自動畫進 Figma</strong> — 不是手畫的。想知道怎麼做？看下一頁 👉</p>
-    <div class="chips"><span class="chip">🤖 AI 生成</span><span class="chip">🎨 在你熟悉的 Figma</span><span class="chip">🆕 2026 beta</span><a href="https://www.figma.com/design/w7cvdf9QqpMgI1jz2KswAZ/Untitled?node-id=2-2" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--figma); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 Figma 檔 →</a></div>
-    <div class="shot"><img class="zoomable" src="img/figma-ai-dashboard.png" alt="AI 在 Figma 生成的儀表板設計"></div>
+
+    <div style="background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(220,38,38,0.06)); border: 1px dashed var(--accent); border-radius: 12px; padding: 16px 22px; margin-top: 22px; text-align: center; font-size: 16px; line-height: 1.7;">
+      所以現在 <strong class="highlight-figma">Figma</strong> 跟 <strong class="highlight-paper">Paper</strong> 都做得到 — 兩個都有<strong>美編熟悉的 GUI 編輯器</strong>。<br>下一頁比比看，各自的強項 👉
+    </div>
   </div>
 </section>
 
-<!-- 11: 附錄 · 怎麼做到的（page 19 detail）-->
+<!-- 11: 差別 — 各自的強項（含能力清單 + 範例檔） -->
 <section class="slide" data-slide="11">
-  <div class="slide-inner fade-in" style="max-width: 1200px;">
-    <div class="label" style="color: var(--figma);">附錄 · 怎麼做到的（beta）&nbsp;&nbsp;<span style="display:inline-block; background: var(--figma); color:#fff; padding:2px 10px; border-radius:9999px; font-size:11px; font-weight:800; letter-spacing:1px;">🆕 2026 最新</span></div>
-    <h2 style="font-size: clamp(26px, 3.4vw, 40px); margin-bottom: 8px;">用 <span class="highlight-claude">Claude Code</span> 把設計生成到 <span class="highlight-figma">Figma</span></h2>
-    <p class="subtitle" style="margin-bottom: 22px;">在 Figma 裡，用打字描述讓 AI 生成設計。設定請工程師幫一次。</p>
+  <div class="slide-inner fade-in" style="max-width: 1300px;">
+    <div class="label">MCP · 各自的強項</div>
+    <h2 style="margin-bottom: 14px;">不一樣的地方 — <span class="highlight-claude">各取所長</span></h2>
+    <p class="subtitle" style="margin-bottom: 22px;">兩個一起用，挑各自最好的 section 組合起來。</p>
 
-    <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 10px;">① 需要準備</div>
-    <div class="cap-grid" style="margin-bottom: 20px;">
-      <div class="cap-card"><div class="icon">🤖</div><div class="name" style="font-size: 16px;">Claude Code</div><div class="desc">AI 工具（要 Claude 帳號）</div></div>
-      <div class="cap-card"><div class="icon">🎨</div><div class="name" style="font-size: 16px;">Figma 付費帳號</div><div class="desc">Full seat 才能寫進 Figma</div></div>
-      <div class="cap-card"><div class="icon">🔌</div><div class="name" style="font-size: 16px;">設定 Figma MCP</div><div class="desc">請工程師設定一次</div></div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+
+      <div style="background: var(--surface); border: 2px solid var(--figma); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column;">
+        <div style="font-size: 14px; font-weight: 800; color: var(--figma); letter-spacing: 2px; margin-bottom: 12px;">💎 Figma MCP</div>
+        <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.9; flex: 1;">
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> 新建 <strong>Design 檔</strong> 或 <strong>FigJam</strong> 白板</li>
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> 讀既有 <strong>variables / 設計系統元件</strong></li>
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> 建新 <strong>variables / components</strong></li>
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> 自動畫<strong>架構圖（FigJam）</strong></li>
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> 把現有<strong>網頁抓進 Figma</strong></li>
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> 出<strong>多種 code</strong>（HTML / Tailwind / React）</li>
+        </ul>
+        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 13px; color: var(--text-dim); margin-bottom: 10px;">
+          <strong>適合：</strong>團隊已用 Figma + 設計系統
+        </div>
+        <a href="https://www.figma.com/design/n2ilxi5CN7DS9ZEs9URy0M" target="_blank" style="display: block; padding: 10px 16px; border-radius: 10px; background: var(--figma); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; text-align: center;">▶ 看 Figma MCP 範例檔 →</a>
+      </div>
+
+      <div style="background: var(--surface); border: 2px solid var(--paper); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column;">
+        <div style="font-size: 14px; font-weight: 800; color: var(--paper); letter-spacing: 2px; margin-bottom: 12px;">💎 Paper MCP</div>
+        <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.9; flex: 1;">
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> Prompt → <strong>最漂亮的視覺</strong>（Paper 強項）</li>
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> 原生 <strong>Tailwind</strong> code（單一 stack）</li>
+          <li><span style="color: var(--success); font-weight: 900;">✓</span> 從 <strong>Figma 匯入</strong>設計（插件）</li>
+          <li><span style="color: var(--danger); font-weight: 900;">✗</span> 沒有 FigJam 類功能</li>
+          <li><span style="color: var(--warning); font-weight: 900;">?</span> 新建檔案 / 讀寫 variables、components <span style="color: var(--text-dim); font-size: 12px;">需驗證</span></li>
+        </ul>
+        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 13px; color: var(--text-dim); margin-bottom: 10px;">
+          <strong>適合：</strong>要高質感的單頁設計
+        </div>
+        <a href="https://app.paper.design/file/01KPMV40MNX7WF0B4VCVYYVR9T/1-0" target="_blank" style="display: block; padding: 10px 16px; border-radius: 10px; background: var(--paper); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; text-align: center;">▶ 看 Paper 範例檔 →</a>
+      </div>
+
     </div>
 
-    <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 10px;">② 怎麼用（3 步）</div>
-    <div style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 12px; align-items: stretch; margin-bottom: 18px;">
-      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--figma); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 1</div><div style="font-size: 14px; line-height: 1.6;">貼上 <strong>Figma 連結</strong></div></div>
-      <div style="display: flex; align-items: center; color: var(--text-dim); font-size: 24px;">→</div>
-      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--figma); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 2</div><div style="font-size: 14px; line-height: 1.6;">白話<strong>描述你要的設計</strong></div></div>
-      <div style="display: flex; align-items: center; color: var(--text-dim); font-size: 24px;">→</div>
-      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;"><div style="font-weight: 800; color: var(--success); margin-bottom: 6px; font-size: 12px; letter-spacing: 1px;">STEP 3</div><div style="font-size: 14px; line-height: 1.6;">AI <strong>生成到 Figma</strong>，再滑鼠細修</div></div>
-    </div>
-
-    <div style="background: var(--surface); border: 1px solid var(--figma); border-radius: 12px; padding: 16px 22px;">
-      <div style="font-size: 14px; color: var(--text-dim);">
-        🔗 參考：
-        <a href="https://claude.com/claude-code" target="_blank" style="color: var(--accent);">Claude Code</a> ·
-        <a href="https://www.figma.com/blog/the-figma-canvas-is-now-open-to-agents/" target="_blank" style="color: var(--accent);">Figma 官方說明（canvas open to agents）</a>
-      </div>
-      <div style="font-size: 13px; color: var(--text-dim); margin-top: 8px;">
-        🔬 <strong>還在 beta</strong>：寫進 Figma 目前免費，等正式推出後由 Figma 收費 — 現階段主力仍是 <strong class="highlight-claude">Claude Design</strong>。
-      </div>
+    <div style="background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(220,38,38,0.06)); border: 1px dashed var(--accent); border-radius: 12px; padding: 14px 22px; margin-top: 18px; text-align: center; font-size: 15px; line-height: 1.65;">
+      💡 <strong>美編建議用法：</strong>同時用兩個生成 → 把<strong>各自最好的 section 組合起來</strong>，不用只挑一個。
     </div>
   </div>
 </section>

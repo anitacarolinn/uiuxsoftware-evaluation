@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI 設計工具 2026 — 美編視覺版（看圖就懂）</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,11 +33,11 @@
   .label { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--accent); margin-bottom: 16px; }
 
   .gradient-text { background: linear-gradient(135deg, var(--figma), var(--stitch), var(--aistudio), var(--claude), var(--paper)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .audience-tag { display: inline-block; padding: 8px 20px; border-radius: 24px; font-size: 16px; font-weight: 600; border: 1px solid var(--border); background: var(--surface); margin-right: 8px; }
+  .audience-tag { display: inline-flex; align-items: center; gap: 6px; padding: 8px 20px; border-radius: 24px; font-size: 16px; font-weight: 600; border: 1px solid var(--border); background: var(--surface); margin-right: 8px; }
   .tool-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 14px; color: #fff; }
   .highlight-figma { color: var(--figma); } .highlight-paper { color: var(--paper); } .highlight-stitch { color: var(--stitch); } .highlight-aistudio { color: var(--aistudio); } .highlight-claude { color: var(--claude); }
 
-  .chip { display: inline-block; padding: 7px 16px; border-radius: 9999px; background: var(--surface2); font-size: 16px; font-weight: 600; margin: 4px 4px 0 0; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 9999px; background: var(--surface2); font-size: 16px; font-weight: 600; margin: 4px 4px 0 0; }
   .shot { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px; box-shadow: 0 6px 28px rgba(0,0,0,0.10); }
   .shot img { display: block; width: 100%; max-height: 66vh; object-fit: contain; border-radius: 8px; }
   .head-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
@@ -60,11 +61,11 @@
   .reason-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .reason-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
   .reason-card .num { font-size: 13px; font-weight: 700; color: var(--claude); margin-bottom: 6px; letter-spacing: 1px; }
-  .reason-card .title { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+  .reason-card .title { font-size: 16px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
   .reason-card .body { font-size: 14px; color: var(--text-dim); line-height: 1.55; }
   .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .cap-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px 18px; }
-  .cap-card .icon { font-size: 32px; margin-bottom: 10px; }
+  .cap-card .icon { margin-bottom: 10px; }
   .cap-card .name { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
   .cap-card .desc { font-size: 14px; color: var(--text-dim); line-height: 1.55; }
 
@@ -80,6 +81,10 @@
   .lightbox.show { display: flex; }
   .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 8px 40px rgba(0,0,0,0.6); border-radius: 6px; }
   .lightbox-close { position: absolute; top: 18px; right: 24px; color: #fff; font-size: 36px; font-weight: 300; background: none; border: none; cursor: pointer; line-height: 1; }
+
+  [data-lucide] { display: inline-block; vertical-align: middle; flex-shrink: 0; stroke: currentColor; fill: none; }
+  .icon-sm { width: 16px; height: 16px; }
+  .icon-xl { width: 44px; height: 44px; display: block; margin: 0 auto; }
 
   @media (max-width: 1100px) { .reason-grid, .cap-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 768px) { .slide { padding: 80px 18px 40px; } nav { padding: 12px 18px; } .key-hint { display: none; } .reason-grid, .cap-grid { grid-template-columns: 1fr; } }
@@ -100,7 +105,7 @@
     <h1><span class="gradient-text">AI 幫你<br>更快做設計</span></h1>
     <p class="subtitle">五個 AI 工具實測 — 直接看它們畫出來的樣子</p>
     <div style="margin-top: 36px;">
-      <span class="audience-tag">🎨 給美編</span>
+      <span class="audience-tag"><i data-lucide="palette" class="icon-sm"></i> 給美編</span>
       <span class="audience-tag">少字 · 多圖</span>
     </div>
   </div>
@@ -113,34 +118,35 @@
     <h2 style="text-align: center; margin-bottom: 30px;">為什麼美編該認識 AI 工具</h2>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
       <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 30px 24px; text-align: center;">
-        <div style="font-size: 46px; margin-bottom: 10px;">🤖</div>
+        <div style="margin-bottom: 14px;"><i data-lucide="bot" class="icon-xl"></i></div>
         <div style="font-size: 21px; font-weight: 800; margin-bottom: 6px;">AI 進步很快</div>
         <div style="font-size: 16px; color: var(--text-dim);">打字描述，就能生出設計</div>
       </div>
       <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 30px 24px; text-align: center;">
-        <div style="font-size: 46px; margin-bottom: 10px;">🖱️</div>
+        <div style="margin-bottom: 14px;"><i data-lucide="mouse-pointer-2" class="icon-xl"></i></div>
         <div style="font-size: 21px; font-weight: 800; margin-bottom: 6px;">不用會寫程式</div>
         <div style="font-size: 16px; color: var(--text-dim);">多數工具能用滑鼠改</div>
       </div>
       <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 30px 24px; text-align: center;">
-        <div style="font-size: 46px; margin-bottom: 10px;">⚡</div>
+        <div style="margin-bottom: 14px;"><i data-lucide="zap" class="icon-xl"></i></div>
         <div style="font-size: 21px; font-weight: 800; margin-bottom: 6px;">出來就是成品</div>
         <div style="font-size: 16px; color: var(--text-dim);">工程師直接接手，不用重畫</div>
       </div>
       <div style="background: var(--surface); border: 1px solid var(--claude); border-radius: 16px; padding: 30px 24px; text-align: center;">
-        <div style="font-size: 46px; margin-bottom: 10px;">🤝</div>
+        <div style="margin-bottom: 14px;"><i data-lucide="users" class="icon-xl"></i></div>
         <div style="font-size: 21px; font-weight: 800; margin-bottom: 6px;">Figma 還是主力</div>
         <div style="font-size: 16px; color: var(--text-dim);">AI 只是多一個新幫手</div>
       </div>
     </div>
   </div>
 </section>
+
 <!-- 3: 設定 -->
 <section class="slide" data-slide="3">
   <div class="slide-inner fade-in" style="text-align: center;">
     <h2>同一句話 →<br>五個 AI 畫出<span class="highlight-claude">不一樣</span>的設計</h2>
     <p class="subtitle">題目：一個「災害需求儀表板」</p>
-    <div style="margin-top: 30px; font-size: 18px; color: var(--text-dim);">往下滑，看它們各自的成果 👇</div>
+    <div style="margin-top: 30px; font-size: 18px; color: var(--text-dim); display: inline-flex; align-items: center; gap: 8px;">往下滑，看它們各自的成果 <i data-lucide="arrow-down" class="icon-sm"></i></div>
   </div>
 </section>
 
@@ -151,7 +157,12 @@
       <span class="tool-badge" style="background: var(--paper); font-size: 16px; padding: 7px 18px;">Paper</span>
       <h2>畫面最漂亮，能用滑鼠細修</h2>
     </div>
-    <div class="chips"><span class="chip">🖱️ 滑鼠改</span><span class="chip">✨ 最漂亮</span><span class="chip">🚫 不會動</span><a href="https://app.paper.design/file/01KPMV40MNX7WF0B4VCVYYVR9T/1-0" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--paper); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 live →</a></div>
+    <div class="chips">
+      <span class="chip"><i data-lucide="mouse-pointer-2" class="icon-sm"></i> 滑鼠改</span>
+      <span class="chip"><i data-lucide="sparkles" class="icon-sm"></i> 最漂亮</span>
+      <span class="chip"><i data-lucide="ban" class="icon-sm"></i> 不會動</span>
+      <a href="https://app.paper.design/file/01KPMV40MNX7WF0B4VCVYYVR9T/1-0" target="_blank" style="display:inline-flex;align-items:center;padding:7px 18px;border-radius:9999px;background:var(--paper);color:#fff;font-size:16px;font-weight:700;margin:4px 4px 0 0;text-decoration:none;">▶ 看 live →</a>
+    </div>
     <div class="shot"><img class="zoomable" src="img/paper-1.png" alt="Paper 設計成果"></div>
   </div>
 </section>
@@ -163,7 +174,12 @@
       <span class="tool-badge" style="background: var(--stitch); font-size: 16px; padding: 7px 18px;">Stitch</span>
       <h2>最快、免費，適合做草稿</h2>
     </div>
-    <div class="chips"><span class="chip">⚡ 最快</span><span class="chip">💸 免費</span><span class="chip">💬 打字改</span><a href="https://stitch.withgoogle.com/projects/10574739860128708197" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--stitch); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 live →</a></div>
+    <div class="chips">
+      <span class="chip"><i data-lucide="zap" class="icon-sm"></i> 最快</span>
+      <span class="chip"><i data-lucide="banknote" class="icon-sm"></i> 免費</span>
+      <span class="chip"><i data-lucide="message-circle" class="icon-sm"></i> 打字改</span>
+      <a href="https://stitch.withgoogle.com/projects/10574739860128708197" target="_blank" style="display:inline-flex;align-items:center;padding:7px 18px;border-radius:9999px;background:var(--stitch);color:#fff;font-size:16px;font-weight:700;margin:4px 4px 0 0;text-decoration:none;">▶ 看 live →</a>
+    </div>
     <div class="shot"><img class="zoomable" src="img/stitch-1.png" alt="Stitch 設計成果"></div>
   </div>
 </section>
@@ -175,7 +191,12 @@
       <span class="tool-badge" style="background: var(--aistudio); font-size: 16px; padding: 7px 18px;">AI Studio</span>
       <h2>直接做出能用的網站</h2>
     </div>
-    <div class="chips"><span class="chip">🌐 能上線</span><span class="chip">🎬 會動</span><span class="chip">🖱️ 部分滑鼠改</span><a href="https://ai.studio/apps/57bb988c-4d21-4ddd-ba8a-1be79dffa5a3" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--aistudio); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 live →</a></div>
+    <div class="chips">
+      <span class="chip"><i data-lucide="globe" class="icon-sm"></i> 能上線</span>
+      <span class="chip"><i data-lucide="play-circle" class="icon-sm"></i> 會動</span>
+      <span class="chip"><i data-lucide="mouse-pointer-2" class="icon-sm"></i> 部分滑鼠改</span>
+      <a href="https://ai.studio/apps/57bb988c-4d21-4ddd-ba8a-1be79dffa5a3" target="_blank" style="display:inline-flex;align-items:center;padding:7px 18px;border-radius:9999px;background:var(--aistudio);color:#fff;font-size:16px;font-weight:700;margin:4px 4px 0 0;text-decoration:none;">▶ 看 live →</a>
+    </div>
     <div class="shot"><img class="zoomable" src="img/googleaistudio-1.png" alt="Google AI Studio 設計成果"></div>
   </div>
 </section>
@@ -187,7 +208,12 @@
       <span class="tool-badge" style="background: var(--claude); font-size: 16px; padding: 7px 18px;">Claude Design</span>
       <h2>會動 ＋ 改法最多</h2>
     </div>
-    <div class="chips"><span class="chip">🎬 真的會動</span><span class="chip">🖱️ 改法最多</span><span class="chip">❓ 會先問你</span><a href="https://claude.ai/design/p/decda9f3-7703-4882-a1bb-cf1b4430b3d4?file=dashboard.html&via=share" target="_blank" style="display:inline-block; padding:7px 18px; border-radius:9999px; background:var(--claude); color:#fff; font-size:16px; font-weight:700; margin:4px 4px 0 0; text-decoration:none;">▶ 看 live →</a></div>
+    <div class="chips">
+      <span class="chip"><i data-lucide="play-circle" class="icon-sm"></i> 真的會動</span>
+      <span class="chip"><i data-lucide="mouse-pointer-2" class="icon-sm"></i> 改法最多</span>
+      <span class="chip"><i data-lucide="help-circle" class="icon-sm"></i> 會先問你</span>
+      <a href="https://claude.ai/design/p/decda9f3-7703-4882-a1bb-cf1b4430b3d4?file=dashboard.html&via=share" target="_blank" style="display:inline-flex;align-items:center;padding:7px 18px;border-radius:9999px;background:var(--claude);color:#fff;font-size:16px;font-weight:700;margin:4px 4px 0 0;text-decoration:none;">▶ 看 live →</a>
+    </div>
     <div class="shot"><img class="zoomable" src="img/claude-1.png" alt="Claude Design 設計成果"></div>
   </div>
 </section>
@@ -267,7 +293,7 @@
       </tbody>
     </table>
     <p style="font-size: 14px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">
-      💡 <strong>「能用滑鼠改 (GUI editor)」</strong>= 能像 Figma 一樣用滑鼠調整；標 <strong style="color: var(--danger);">✗</strong> 的只能打 prompt 改。<br>
+      <i data-lucide="lightbulb" class="icon-sm"></i> <strong>「能用滑鼠改 (GUI editor)」</strong>= 能像 Figma 一樣用滑鼠調整；標 <strong style="color: var(--danger);">✗</strong> 的只能打 prompt 改。<br>
       <strong>匯出到 Figma：</strong>只有 <strong class="highlight-figma">Figma Make</strong>（單向）和 <strong class="highlight-stitch">Stitch</strong>。<br>
       <strong>匯入 Figma 設計：</strong><strong class="highlight-paper">Paper</strong>（Figma 插件）、<strong class="highlight-figma">Figma Make</strong>（從 Figma Design）、<strong class="highlight-claude">Claude Design</strong>（可上傳 .fig 檔）。
     </p>
@@ -286,24 +312,24 @@
     <div style="font-size: 12px; font-weight: 800; color: var(--success); letter-spacing: 2px; margin-bottom: 10px;">✓ 為什麼推薦給美編</div>
     <div class="reason-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 18px;">
       <div class="reason-card" style="border-top: 4px solid var(--success);">
-        <div class="title">💰 免費</div>
+        <div class="title"><i data-lucide="wallet" class="icon-sm"></i> 免費</div>
         <div class="body">已含在 Claude</div>
       </div>
       <div class="reason-card" style="border-top: 4px solid var(--success);">
-        <div class="title">🖱️ 改法最多</div>
+        <div class="title"><i data-lucide="mouse-pointer-2" class="icon-sm"></i> 改法最多</div>
         <div class="body">滑鼠也能改</div>
       </div>
       <div class="reason-card" style="border-top: 4px solid var(--success);">
-        <div class="title">🎬 真的會動</div>
+        <div class="title"><i data-lucide="play-circle" class="icon-sm"></i> 真的會動</div>
         <div class="body">能互動測試</div>
       </div>
       <div class="reason-card" style="border-top: 4px solid var(--success);">
-        <div class="title">❓ 會先問你</div>
+        <div class="title"><i data-lucide="help-circle" class="icon-sm"></i> 會先問你</div>
         <div class="body">成品更貼近需求</div>
       </div>
     </div>
     <div style="background: var(--surface); border: 1px solid var(--warning); border-radius: 12px; padding: 16px 22px; margin-bottom: 18px;">
-      <div style="font-size: 12px; font-weight: 800; color: var(--warning); letter-spacing: 2px; margin-bottom: 12px;">⚠ 要注意的地方（但都還好）</div>
+      <div style="font-size: 12px; font-weight: 800; color: var(--warning); letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i data-lucide="alert-triangle" class="icon-sm"></i> 要注意的地方（但都還好）</div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 28px; font-size: 14px; line-height: 1.6; color: var(--text);">
         <div>① 每週有額度 <span style="color: var(--text-dim);">→ 分批做</span></div>
         <div>② 只能用瀏覽器 <span style="color: var(--text-dim);">→ 要有網路</span></div>
@@ -312,32 +338,32 @@
       </div>
     </div>
     <div style="text-align: center; font-size: 14px; color: var(--text); background: var(--surface); border-radius: 10px; padding: 12px 18px;">
-      <strong style="color: var(--claude);">📌 建議：</strong>下一個小專案，先用 Claude Design 試試看。
+      <strong style="color: var(--claude);"><i data-lucide="pin" class="icon-sm" style="color:var(--claude);"></i> 建議：</strong>下一個小專案，先用 Claude Design 試試看。
     </div>
   </div>
 </section>
 
-<!-- 10: Figma 新發展 — 也能 Prompt → Code -->
+<!-- 10: Figma 新發展 — 也能 Prompt → Design -->
 <section class="slide" data-slide="10">
   <div class="slide-inner fade-in" style="max-width: 1200px;">
     <div class="label" style="color: var(--figma);">2026 新發展</div>
-    <h2 style="margin-bottom: 14px;"><span class="highlight-figma">Figma</span> 現在也能 <span class="highlight-claude">Prompt → Code</span> 了</h2>
+    <h2 style="margin-bottom: 14px;"><span class="highlight-figma">Figma</span> 現在也能 <span class="highlight-claude">Prompt → Design</span> 了</h2>
     <p class="subtitle" style="margin-bottom: 30px;">Figma 開放 MCP 之後，AI 可以直接在 Figma 裡生成設計 ＋ 出 code — 不再只是「畫設計稿」而已。</p>
 
     <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: stretch;">
       <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 26px;">
-        <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 12px;">🐢 以前</div>
+        <div style="font-size: 13px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i data-lucide="clock" class="icon-sm"></i> 以前</div>
         <div style="font-size: 17px; line-height: 1.75;">美編在 Figma 畫<strong>設計稿</strong> → 工程師<strong>手刻 code</strong> → 變成網站</div>
       </div>
       <div style="display: flex; align-items: center; color: var(--text-dim); font-size: 32px;">→</div>
       <div style="background: var(--surface); border: 2px solid var(--figma); border-radius: 14px; padding: 24px 26px;">
-        <div style="font-size: 13px; font-weight: 800; color: var(--figma); letter-spacing: 2px; margin-bottom: 12px;">⚡ 現在（用 MCP）</div>
+        <div style="font-size: 13px; font-weight: 800; color: var(--figma); letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i data-lucide="zap" class="icon-sm"></i> 現在（用 MCP）</div>
         <div style="font-size: 17px; line-height: 1.75;">美編<strong>打字描述</strong> → AI <strong>直接在 Figma 生成設計 ＋ code</strong></div>
       </div>
     </div>
 
     <div style="background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(220,38,38,0.06)); border: 1px dashed var(--accent); border-radius: 12px; padding: 16px 22px; margin-top: 22px; text-align: center; font-size: 16px; line-height: 1.7;">
-      所以現在 <strong class="highlight-figma">Figma</strong> 跟 <strong class="highlight-paper">Paper</strong> 都做得到 — 兩個都有<strong>美編熟悉的 GUI 編輯器</strong>。<br>下一頁比比看，各自的強項 👉
+      所以現在 <strong class="highlight-figma">Figma</strong> 跟 <strong class="highlight-paper">Paper</strong> 都做得到 — 兩個都有<strong>美編熟悉的 GUI 編輯器</strong>。<br>下一頁比比看，各自的強項 <i data-lucide="arrow-right" class="icon-sm"></i>
     </div>
   </div>
 </section>
@@ -352,7 +378,7 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
 
       <div style="background: var(--surface); border: 2px solid var(--figma); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column;">
-        <div style="font-size: 14px; font-weight: 800; color: var(--figma); letter-spacing: 2px; margin-bottom: 12px;">💎 Figma MCP</div>
+        <div style="font-size: 14px; font-weight: 800; color: var(--figma); letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i data-lucide="gem" class="icon-sm"></i> Figma MCP</div>
         <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.9; flex: 1;">
           <li><span style="color: var(--success); font-weight: 900;">✓</span> 新建 <strong>Design 檔</strong> 或 <strong>FigJam</strong> 白板</li>
           <li><span style="color: var(--success); font-weight: 900;">✓</span> 讀既有 <strong>variables / 設計系統元件</strong></li>
@@ -368,7 +394,7 @@
       </div>
 
       <div style="background: var(--surface); border: 2px solid var(--paper); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column;">
-        <div style="font-size: 14px; font-weight: 800; color: var(--paper); letter-spacing: 2px; margin-bottom: 12px;">💎 Paper MCP</div>
+        <div style="font-size: 14px; font-weight: 800; color: var(--paper); letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;"><i data-lucide="gem" class="icon-sm"></i> Paper MCP</div>
         <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.9; flex: 1;">
           <li><span style="color: var(--success); font-weight: 900;">✓</span> Prompt → <strong>最漂亮的視覺</strong>（Paper 強項）</li>
           <li><span style="color: var(--success); font-weight: 900;">✓</span> 原生 <strong>Tailwind</strong> code（單一 stack）</li>
@@ -385,7 +411,7 @@
     </div>
 
     <div style="background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(220,38,38,0.06)); border: 1px dashed var(--accent); border-radius: 12px; padding: 14px 22px; margin-top: 18px; text-align: center; font-size: 15px; line-height: 1.65;">
-      💡 <strong>美編建議用法：</strong>同時用兩個生成 → 把<strong>各自最好的 section 組合起來</strong>，不用只挑一個。
+      <i data-lucide="lightbulb" class="icon-sm"></i> <strong>美編建議用法：</strong>同時用兩個生成 → 把<strong>各自最好的 section 組合起來</strong>，不用只挑一個。
     </div>
   </div>
 </section>
@@ -434,6 +460,7 @@
     lb.addEventListener('click', () => lb.classList.remove('show'));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('show')) { lb.classList.remove('show'); e.stopPropagation(); } });
   })();
+  lucide.createIcons();
 </script>
 </body>
 </html>
